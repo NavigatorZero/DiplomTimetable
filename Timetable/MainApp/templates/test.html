@@ -1,0 +1,21 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{% static "css/blog.css" %}" rel="stylesheet">
+</head>
+<body>
+<div id="content">
+
+    {% block content %}
+     {% include "list.html" %}
+    {% endblock %}
+</div>
+<div id="sidebar">
+    <h2>Все права разрешены</h2>
+    <p>Это футер.</p>
+
+</div>
+</body>
+</html>

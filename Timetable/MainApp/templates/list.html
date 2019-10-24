@@ -1,0 +1,39 @@
+
+{% block title %}Вложенный титл{% endblock %}
+{% block content %}
+    <h1>Расписнание на </h1>
+
+    <div class="table">
+      <table>
+
+
+<thead>
+  <tr>
+    Номер пары
+  </tr>
+  <tr>
+Предмет
+  </tr>
+  <tr>
+    Преподователь
+  </tr>
+  <tr>
+    Подгруппа
+  </tr>
+  <tr>Аудитория</tr>
+</thead>
+{% for post in posts %}
+<td>{{post.NLecii}} </td>
+<td>{{post.Predmet }}</td>
+<td>{{post.Prepod}}</td>
+<td>{{post.Podgruppa}}</td>
+<td>{{post.Auditoriya }}</td>
+
+<td>Дата: {{post.vremya}}</td>
+
+      </table>
+
+
+    </div>
+  {% endfor %}
+{% endblock %}
