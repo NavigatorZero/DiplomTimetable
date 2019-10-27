@@ -1,0 +1,14 @@
+
+.regestrationForm{
+margin-left: 1200px;
+}
+
+.head{
+  border: 4px double black; /* Параметры границы */
+  background: rgb(0,212,255);
+  background: linear-gradient(90deg, rgba(0,212,255,1) 10%, rgba(14,193,119,1) 46%, rgba(2,0,36,1) 98%);
+   padding: 10px; /
+}
+.footer{
+  border: 4px double black; 
+}

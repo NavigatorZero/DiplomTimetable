@@ -1,21 +1,82 @@
-{% load staticfiles %}
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>{% block title %}{% endblock %}</title>
-    <link href="{% static "css/blog.css" %}" rel="stylesheet">
+    <link  href="{% static 'css/bootstrap.css' %}" rel="stylesheet"  type="text/css">
+    <link  href="{% static 'css/bootstrap-grid.css' %}" rel="stylesheet"  type="text/css">
+    <link  href="{% static 'css/main.css' %}" rel="stylesheet"  type="text/css">
+
+      <script src="{% static 'js/jquery-3.4.1.min.js' %}"  type="text/javascript"></script>
+      <script src="{% static 'js/bootstrap.js' %}"  type="text/javascript"></script>
+
+
 </head>
 <body>
+  <div class="head">
+      <img src="{% static 'img/logo_uisi.png' %}">
+  </div>
+  <div class="regestrationForm">
+  <div class="container">
+  	<div class="row">
+  		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+  			<!-- Start form -->
+                      <form action="/list.html" ,method="post">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Email address</label>
+                          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleInputPassword1">Password</label>
+                          <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                        </div>
+                        <div class="form-check">
+                          <button class="btn btn-info" type="button" name="showpassword" id="showpassword" value="Show Password">Show password</button>
+                          <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+
+                      </form>
+
+
+  			<!-- End form -->
+  		</div>
+</div>
+
+
+  	</div>
+  </div>
 <div id="content">
+
+
 
     {% block content %}
      {% include "list.html" %}
     {% endblock %}
 </div>
+<div class="footer">
 <div id="sidebar">
     <h2>Все права разрешены</h2>
     <p>Это футер.</p>
 
-</div>
+<div>
 </body>
 </html>
+<script>
+$(document).ready(function(){
+
+  $("#showpassword").on('click', function(){
+
+		var pass = $("#password");
+		var fieldtype = pass.attr('type');
+		if (fieldtype == 'password') {
+			pass.attr('type', 'text');
+			$(this).text("Hide Password");
+		}else{
+			pass.attr('type', 'password');
+			$(this).text("Show Password");
+		}
+
+
+	});
+
+});</script>
