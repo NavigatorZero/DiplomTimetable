@@ -10,16 +10,22 @@ class AcademicPlan(models.Model):
     LectureHours=models.IntegerField()
     labHours=models.IntegerField()
     PracticeHours=models.IntegerField()
-
+    class Meta:
+        verbose_name = 'Академический план'
+        verbose_name_plural = 'Академические планы'
 
 class Teachers(models.Model):
     TeacherFIO=models.CharField(max_length=100, primary_key=True)
     Kafedra=models.CharField(max_length=100)
-
+    class Meta:
+        verbose_name = 'Преподователь'
+        verbose_name_plural = 'Преподователь'
 
 class Cafedra (models.Model):
     CafedraName=models.CharField(max_length=100, primary_key=True)
-
+    class Meta:
+        verbose_name = 'Кафедра'
+        verbose_name_plural = 'Кафедры'
 
 class Auditoriy(models.Model):
     AuditoriyType=[
@@ -30,11 +36,17 @@ class Auditoriy(models.Model):
     Additionaltype=models.CharField(max_length=45,choices=AuditoriyType)
     Kafedra=models.CharField(max_length=45)
     Auditoriyname=models.IntegerField()
+    class Meta:
+        verbose_name = 'Аудитория'
+        verbose_name_plural = 'Аудитории'
 
 
 class Group(models.Model):
     GroupName=models.CharField(max_length=45, primary_key=True)
     Subgroup=models.IntegerField()
+    class Meta:
+        verbose_name = 'Группа'
+        verbose_name_plural = 'Группы'
 
 
 class Subject(models.Model):
@@ -47,6 +59,9 @@ class Subject(models.Model):
     Subject=models.IntegerField()
     SubjectNumber=models.IntegerField()
     Date=models.IntegerField()
+    class Meta:
+        verbose_name = 'Предмет'
+        verbose_name_plural = 'Предметы'
 
 
 

@@ -9,4 +9,4 @@ def Main_list(request):
         Aditoriy=Auditoriy.objects.all()
         Grup=Group.objects.all()
         Subjct=Subject.objects.all()
-        return render(request, 'test.html', {'posts': Academic})
+        return render(request, 'test.html', {'posts': Academic,"groups":Grup})

@@ -1,50 +1,54 @@
-
 {% block title %}Вложенный титл{% endblock %}
 {% block content %}
-<div class="form-group col-md-2">
-    <label for="inputState">Выберите группу</label>
-    <select id="inputState" class="form-control">
-      <option selected>Группа</option>
-      <option>Пе-61</option>
-      <option>Пе-71</option>
-      <option>Пе-81</option>
-    </select>
-  </div>
-    <h1>Расписнание на </h1>
+<div class="row">
+<div class="form-group col-l2">
+  <label for="inputState">Выберите группу</label>
+  <select id="inputState" class="form-control">
+    {%for group in groups %}
+    <option>{{group.GroupName}}</option>
+    {%endfor%}
 
-      <table class="table">
-<thead>
-  <tr>
-    <th> Номер пары</th>
-  <th>
-Предмет
-  </th>
-  <th>
-    Преподователь
-  </th>
-  <th>
-    Подгруппа
-  </th>
-  <th>Аудитория</th>
-    <th>Время</th>
+  </select>
+
+  <label for="inputState">Выберите Дату</label>
+  <select id="inputState" class="form-control">
+    {%for group in groups %}
+    <option>{{group.GroupName}}</option>
+    {%endfor%}
+
+  </select>
+</div></div>
+<h1>Расписнание на </h1>
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th> Номер пары</th>
+      <th>
+        Предмет
+      </th>
+      <th>
+        Преподователь
+      </th>
+      <th>
+        Подгруппа
+      </th>
+      <th>Аудитория</th>
+      <th>Время</th>
     </tr>
-</thead>
-<tbody>
-  {% for post in posts %}
-  <tr>
-
-
-  <td>{{post.Group}} </td>
-  <td>{{post.SubjectName }}</td>
-  <td>{{post.LectureHours}}</td>
-  <td>{{post.labHours}}</td>
-  <td>{{post.PracticeHours }}</td>
-  <td>{{post.vremya}}</td>
-  {% endfor %}
+  </thead>
+  <tbody>
+    {% for post in posts %}
+    <tr>
+      <td>{{post.Group}} </td>
+      <td>{{post.SubjectName }}</td>
+      <td>{{post.LectureHours}}</td>
+      <td>{{post.labHours}}</td>
+      <td>{{post.PracticeHours }}</td>
+      <td>{{post.vremya}}</td>
+      {% endfor %}
     </tr>
-</tbody>
-
-      </table>
-
-
+  </tbody>
+</table>
 {% endblock %}
