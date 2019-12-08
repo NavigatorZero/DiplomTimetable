@@ -2,6 +2,13 @@
 {% block content %}
 <div class="row">
 <div class="form-group col-l2">
+  
+  {{tests}}
+  {%for test in tests%}
+  {{test.id}}
+{{test.LessonNumber}}
+{{test.Date}}<br>
+  {%endfor%}
   <label for="inputState">Выберите группу</label>
   <select id="inputState" class="form-control">
     {%for group in groups %}
@@ -41,9 +48,9 @@
   <tbody>
     {% for post in posts %}
     <tr>
-      <td>{{post.Group}} </td>
-      <td>{{post.SubjectName }}</td>
-      <td>{{post.LectureHours}}</td>
+      <td>{{post.NLecii}} </td>
+      <td>{{post.Predmet }}</td>
+      <td>{{post.Prepod}}</td>
       <td>{{post.labHours}}</td>
       <td>{{post.PracticeHours }}</td>
       <td>{{post.vremya}}</td>
