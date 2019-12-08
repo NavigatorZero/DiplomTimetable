@@ -4,24 +4,18 @@
 <div class="form-group col-l2">
   
   {{tests}}
-  {%for test in tests%}
-  {{test.id}}
-{{test.LessonNumber}}
-{{test.Date}}<br>
-  {%endfor%}
-  <label for="inputState">Выберите группу</label>
-  <select id="inputState" class="form-control">
-    {%for group in groups %}
-    <option>{{group.GroupName}}</option>
-    {%endfor%}
+ 
 
-  </select>
+  <label for="inputState">Выберите группу</label>
+ 
+  <br>
+<div class="col-lg-4"> {{tests}}<br>
+  {{groups}}
+</div>
+
 
   <label for="inputState">Выберите Дату</label>
-  <select id="inputState" class="form-control">
-    {%for group in groups %}
-    <option>{{group.GroupName}}</option>
-    {%endfor%}
+  
 
   </select>
 </div></div>

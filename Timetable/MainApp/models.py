@@ -8,7 +8,7 @@ from django.urls import reverse
 class studyPlanPE61(models.Model):
     subject=models.CharField(max_length=250)
     typeSubject=models.CharField(max_length=50)
-    hours=models.DecimalField(max_digits=10,decimal_places=1)
+    hours=models.IntegerField()
     teacher=models.CharField(max_length=150)
 
 class studyPlanPE71(models.Model):
