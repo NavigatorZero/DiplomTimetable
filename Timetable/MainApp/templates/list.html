@@ -9,15 +9,18 @@
   <label for="inputState">Выберите группу</label>
  
   <br>
-<div class="col-lg-4"> {{tests}}<br>
-  {{groups}}
+<div> всего часов {{tests}}<br>
+  часов на дисциплину
+   {% for group in groups %}
+        {{group.teacher}}
+  {% endfor%}
 </div>
 
 
   <label for="inputState">Выберите Дату</label>
   
 
-  </select>
+
 </div></div>
 <h1>Расписнание на </h1>
 
@@ -33,7 +36,7 @@
         Преподователь
       </th>
       <th>
-        Подгруппа
+        Тип занятия
       </th>
       <th>Аудитория</th>
       <th>Время</th>
@@ -45,8 +48,8 @@
       <td>{{post.NLecii}} </td>
       <td>{{post.Predmet }}</td>
       <td>{{post.Prepod}}</td>
-      <td>{{post.labHours}}</td>
-      <td>{{post.PracticeHours }}</td>
+      <td>{{post.Podgruppa}}</td>
+      <td>{{post.Auditoriya }}</td>
       <td>{{post.vremya}}</td>
       {% endfor %}
     </tr>
