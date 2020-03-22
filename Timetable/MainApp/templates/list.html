@@ -1,58 +1,65 @@
 {% block title %}Вложенный титл{% endblock %}
 {% block content %}
 <div class="row">
-<div class="form-group col-l2">
-  
-  {{tests}}
- 
+    <div class="form-group col-l2">
 
-  <label for="inputState">Выберите группу</label>
- 
-  <br>
-<div> всего часов {{tests}}<br>
-  часов на дисциплину
-   {% for group in groups %}
-        {{group.teacher}}
-  {% endfor%}
+        {{tests}}
+
+
+        <label for="inputState">Выберите группу</label>
+
+        <br>
+        <div> всего часов {{tests}}<br>
+            часов на дисциплину
+            {% for group in groups %}
+            {{group.teacher}}
+            {% endfor%}
+        </div>
+
+
+        <form action="{%url 'Main_list' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" name="erase" id="erase">Стереть расписание</button>
+            <button type="submit" name="fill" id="fill">Составить расписание</button>
+        </form>
+
+
+        <label for="inputState">Выберите Дату</label>
+
+
+    </div>
 </div>
-
-
-  <label for="inputState">Выберите Дату</label>
-  
-
-
-</div></div>
 <h1>Расписнание на </h1>
 
 
 <table class="table">
-  <thead>
+    <thead>
     <tr>
-      <th> Номер пары</th>
-      <th>
-        Предмет
-      </th>
-      <th>
-        Преподователь
-      </th>
-      <th>
-        Тип занятия
-      </th>
-      <th>Аудитория</th>
-      <th>Время</th>
+        <th> Номер пары</th>
+        <th>
+            Предмет
+        </th>
+        <th>
+            Преподователь
+        </th>
+        <th>
+            Тип занятия
+        </th>
+        <th>Аудитория</th>
+        <th>Время</th>
     </tr>
-  </thead>
-  <tbody>
+    </thead>
+    <tbody>
     {% for post in posts %}
     <tr>
-      <td>{{post.NLecii}} </td>
-      <td>{{post.Predmet }}</td>
-      <td>{{post.Prepod}}</td>
-      <td>{{post.Podgruppa}}</td>
-      <td>{{post.Auditoriya }}</td>
-      <td>{{post.vremya}}</td>
-      {% endfor %}
+        <td>{{post.NLecii}}</td>
+        <td>{{post.Predmet }}</td>
+        <td>{{post.Prepod}}</td>
+        <td>{{post.Podgruppa}}</td>
+        <td>{{post.Auditoriya }}</td>
+        <td>{{post.vremya}}</td>
+        {% endfor %}
     </tr>
-  </tbody>
+    </tbody>
 </table>
 {% endblock %}

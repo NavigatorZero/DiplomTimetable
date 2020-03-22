@@ -3,6 +3,6 @@ from . import views
 
 urlpatterns = [
     # post views
-    url(r'^$', views.Main_list, name='Main_list'),
 
+    url('', views.Main_list, name='Main_list'),
 ]

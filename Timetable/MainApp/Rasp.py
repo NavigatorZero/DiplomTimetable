@@ -31,7 +31,7 @@ class Rasp:
                     obj.Predmet = studyPlan[y].subject
                     if studyPlan[y].typeSubject == "Лекция" and Table[x].Auditoriya == "":
                         clases = CafedraClasses.objects.filter(AllowedLections="True")
-                        obj.Auditoriya = clases[range(0-3)].ClassName
+                        obj.Auditoriya = clases[0].ClassName
                         obj.Podgruppa = studyPlan[y].typeSubject
                         obj.save()
                         hours-=1

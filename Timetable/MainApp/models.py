@@ -3,7 +3,7 @@ from django.conf import settings
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
-
+import datetime
 
 class studyPlanPE61(models.Model):
     subject = models.CharField(max_length=250)
@@ -49,12 +49,13 @@ class MainTable(models.Model):
         ('draft', 'Draft'),
         ('published', 'Published'),
     )
-    NLecii = models.CharField(max_length=250)
-    Predmet = models.CharField(max_length=250)
-    Prepod = models.CharField(max_length=250)
-    Podgruppa = models.CharField(max_length=250)
-    vremya = models.DateTimeField()
-    Auditoriya = models.CharField(max_length=250)
+
+    NLecii = models.CharField(max_length=250,null=True)
+    Predmet = models.CharField(max_length=250,null=True)
+    Prepod = models.CharField(max_length=250,null=True)
+    Podgruppa = models.CharField(max_length=250,null=True)
+    vremya = models.DateTimeField(null=False)
+    Auditoriya = models.CharField(max_length=250,null=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
 
 
