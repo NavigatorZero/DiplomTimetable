@@ -15,6 +15,7 @@ class Rasp:
                             y].teacher.first_name  # надо откуда то брать имя препода
                         obj.NLecii = PrepodTable[y].LessonNumber
                         obj.vremya = PrepodTable[y].Date
+                        obj.teacherId = PrepodTable[y].teacher
                         obj.save()
 
     # функция устанавливает предмет в главную таблицу
@@ -22,33 +23,40 @@ class Rasp:
         Table.exclude(Prepod="")
 
         for x in range(len(Table)):
-            print(hours)
             for y in range(len(studyPlan)):
-
-                test = studyPlan[y].teacher.last_name + " " + studyPlan[y].teacher.first_name
-                if Table[x].Prepod == test and hours>0:
+                if Table[x].teacherId == studyPlan[y].teacher and hours > 0:
                     obj = MainTable.objects.get(pk=Table[x].id)
-                    obj.Predmet = studyPlan[y].subject
-                    if studyPlan[y].typeSubject == "Лекция" and Table[x].Auditoriya == "":
+                    hoursType = studyPlan[y].hours
+                    if studyPlan[y].typeSubject == "Лекция" and obj.Auditoriya == "" and  studyPlan[y].remaningLectures > 0 :
                         clases = CafedraClasses.objects.filter(AllowedLections="True")
+                        obj.Predmet = studyPlan[y].subject
                         obj.Auditoriya = clases[0].ClassName
                         obj.Podgruppa = studyPlan[y].typeSubject
                         obj.save()
-                        hours-=1
+                        studyPlan[y].remaningLectures -= 1
+                        studyPlan[y].save()
+                        hours -= 1
                         continue
 
-                    elif studyPlan[y].typeSubject == "Практика" and Table[x].Auditoriya == "":
+                    if studyPlan[y].typeSubject == "Практика" and obj.Auditoriya == "" and studyPlan[y].remaningLectures > 0:
                         clases = CafedraClasses.objects.filter(AllowedPractice="True")
+                        obj.Predmet = studyPlan[y].subject
                         obj.Auditoriya = clases[0].ClassName
                         obj.Podgruppa = studyPlan[y].typeSubject
                         obj.save()
-                        hours-=1
+                        studyPlan[y].remaningLectures -= 1
+                        studyPlan[y].save()
+                        hours -= 1
                         continue
 
-                    elif studyPlan[y].typeSubject == "ЛабРабота" and Table[x].Auditoriya == "":
+                    if studyPlan[y].typeSubject == "ЛабРабота" and obj.Auditoriya == "" and studyPlan[y].remaningLectures > 0:
                         clases = CafedraClasses.objects.filter(AllowedLabs="True")
+                        obj.Predmet = studyPlan[y].subject
                         obj.Auditoriya = clases[0].ClassName
                         obj.Podgruppa = studyPlan[y].typeSubject
                         obj.save()
-                        hours-=1
+
+                        studyPlan[y].remaningLectures -= 1
+                        studyPlan[y].save()
+                        hours -= 1
                         continue

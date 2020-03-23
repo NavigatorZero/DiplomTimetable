@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import MainTable, teacher1, studyPlanPE61, teacher2, CafedraClasses
+from .models import *
 from django.db.models import Sum, Max, Count, Avg
 from .Rasp import *
 import datetime
@@ -57,7 +57,11 @@ def Main_list(request):
             if studyPlanPE61.objects.filter(subject=word).exists():
                 HoursByDiscipline = studyPlanPE61.objects.filter(subject=word).aggregate(Sum('hours')).get('hours__sum',
                                                                                                            0.00)  # кол-во часов по дисциплине
-                Rasp.setSubject(Academic, group1, HoursByDiscipline)  # Записываем предмет на основе кол-ва часов
+                hours = CustomValues()
+                hours.alias="HoursByDiscipline "+word
+                hours.value=HoursByDiscipline
+                hours.save()
+                Rasp.setSubject(Academic, studyPlanPE61.objects.filter(subject=word), HoursByDiscipline)  # Записываем предмет на основе кол-ва часов
 
 
     Result = MainTable.objects.all()
