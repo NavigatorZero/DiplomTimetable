@@ -14,6 +14,10 @@ from django.db import connection, transaction
 def Main_list(request):
     if request.method == 'POST' and 'erase' in request.POST:
         MainTable.objects.all().delete()
+        group1 = studyPlanPE61.objects.all()
+        for x in range(len(group1)):
+            group1[x].remaningLectures=group1[x].hours
+            group1[x].save()
 
     if request.method == 'POST' and 'fill' in request.POST:
         cursor = connection.cursor()
@@ -41,8 +45,6 @@ def Main_list(request):
 
         AllHours = studyPlanPE61.objects.aggregate(Sum('hours')).get('hours__sum',
                                                                      0.00)  # кол-во часов одной группы в семестр по всем дисциплинам
-
-        group1 = studyPlanPE61.objects.all()
         Academic = MainTable.objects.all()
 
         prepod1 = teacher1.objects.filter(isBusy="True")
