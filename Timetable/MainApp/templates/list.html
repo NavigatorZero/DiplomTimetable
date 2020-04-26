@@ -1,20 +1,14 @@
+
+<div class="test">
 {% block title %}Вложенный титл{% endblock %}
 {% block content %}
 <div class="row">
     <div class="form-group col-l2">
 
-        {{tests}}
+        <label>Выберите дату занятий</label>
+        <input type="date" id="raspDate" class="date">
+        <button id="raspDateButton" class="btn btn-success"> отправить</button>
 
-
-        <label for="inputState">Выберите группу</label>
-
-        <br>
-        <div> всего часов {{tests}}<br>
-            часов на дисциплину
-            {% for group in groups %}
-            {{group.teacher}}
-            {% endfor%}
-        </div>
 
 
         <form action="{%url 'Main_list' %}" method="post">
@@ -57,9 +51,47 @@
         <td>{{post.Prepod}}</td>
         <td>{{post.Podgruppa}}</td>
         <td>{{post.Auditoriya }}</td>
-        <td>{{post.vremya}}</td>
+        <td>{{post.vremya |date:"d-m-Y"}}</td>
         {% endfor %}
     </tr>
     </tbody>
 </table>
+<script>
+ $(document).ready(function(){
+     var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+
+     function csrfSafeMethod(method) {
+         // these HTTP methods do not require CSRF protection
+         return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+     }
+
+     $("#raspDateButton").click(function(){
+         $.ajax({
+             method: "POST",
+             url: "{%url 'Main_list'%}",
+             dataType: "text",
+             data: {
+                 "scheduleDay": $("#raspDate").val(),
+             },
+             beforeSend: function (xhr, settings) {
+                 // if not safe, set csrftoken
+                 if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                     xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                 }
+             },
+             success: function(data) {
+                 $(".test").html(data);
+                 console.log('ssucces')
+             },
+             error: function(er) {
+                 console.log(er);
+             }
+         });
+     });
+
+});
+
+
+</script>
 {% endblock %}
+</div>

@@ -3,33 +3,36 @@
 <html>
 <head>
     <title>{% block title %}{% endblock %}</title>
-    <link  href="{% static 'css/bootstrap.css' %}" rel="stylesheet"  type="text/css">
-    <link  href="{% static 'css/bootstrap-grid.css' %}" rel="stylesheet"  type="text/css">
-    <link  href="{% static 'css/main.css' %}" rel="stylesheet"  type="text/css">
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/bootstrap-grid.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css">
 
-      <script src="{% static 'js/jquery-3.4.1.min.js' %}"  type="text/javascript"></script>
-      <script src="{% static 'js/bootstrap.js' %}"  type="text/javascript"></script>
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/bootstrap.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/jquery.cookie.js' %}" type="text/javascript"></script>
 
 
 </head>
 <body>
-  <div class="head">
-      <img src="{% static 'img/logo_uisi.png' %}">
-  </div>
+<div class="head">
+    <img src="{% static 'img/logo_uisi.png' %}">
+    <a class="btn btn-primary" href="/admin/">admin panel</a>
+</div>
 
-  	</div>
-  </div>
 <div id="content">
     {% block content %}
-     {% include "list.html" %}
+    {% include "list.html" %}
     {% endblock %}
 </div>
 <div class="footer">
-<div id="sidebar">
-    <h2>Все права разрешены</h2>
-    <p>Это футер.</p>
+    <div id="sidebar">
+        <h2>Все права разрешены</h2>
+        <p>Это футер.</p>
 
-<div>
+        <div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
 <script>

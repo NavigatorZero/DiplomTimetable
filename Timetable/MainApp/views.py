@@ -16,7 +16,7 @@ def Main_list(request):
         MainTable.objects.all().delete()
         group1 = studyPlanPE61.objects.all()
         for x in range(len(group1)):
-            group1[x].remaningLectures=group1[x].hours
+            group1[x].remaningLectures = group1[x].hours
             group1[x].save()
 
     if request.method == 'POST' and 'fill' in request.POST:
@@ -36,36 +36,48 @@ def Main_list(request):
 
             opa.append(test)
 
-        MainTable.objects.bulk_create(opa)
-        semestrdays = 121  # кол-во дней в семестре
-        semestrHours = 726  # часов в семестре
-        subjectArray = [
-            "Математика", "Физика", "Гегорафия"
-        ]
+            MainTable.objects.bulk_create(opa)
 
-        AllHours = studyPlanPE61.objects.aggregate(Sum('hours')).get('hours__sum',
-                                                                     0.00)  # кол-во часов одной группы в семестр по всем дисциплинам
-        Academic = MainTable.objects.all()
+    if request.method == 'POST' and 'scheduleDay' in request.POST:
+        oneDayRasp = MainTable.objects.filter(vremya=request.POST['scheduleDay'])
+        print(oneDayRasp)
+        print("itworks")
 
-        prepod1 = teacher1.objects.filter(isBusy="True")
+        return render(request, 'list.html', {'posts': oneDayRasp})
 
-        prepod2 = teacher2.objects.filter(isBusy="True")
+    semestrdays = 121  # кол-во дней в семестре
+    semestrHours = 726  # часов в семестре
+    subjectArray = [
+        "Математика", "Физика", "Гегорафия"
+    ]
 
-        PrepodArray = [prepod1, prepod2]
+    AllHours = studyPlanPE61.objects.aggregate(Sum('hours')).get('hours__sum',
+                                                                 0.00)  # кол-во часов одной группы в семестр по всем дисциплинам
+    Academic = MainTable.objects.all()
 
-        Rasp.setTeacher(Academic, PrepodArray)  # Записываем преподователя на основе его выбора
-        for word in subjectArray:
+    prepod1 = teacher1.objects.filter(isBusy="True")
 
-            if studyPlanPE61.objects.filter(subject=word).exists():
-                HoursByDiscipline = studyPlanPE61.objects.filter(subject=word).aggregate(Sum('hours')).get('hours__sum',
-                                                                                                           0.00)  # кол-во часов по дисциплине
-                hours = CustomValues()
-                hours.alias="HoursByDiscipline "+word
-                hours.value=HoursByDiscipline
-                hours.save()
-                Rasp.setSubject(Academic, studyPlanPE61.objects.filter(subject=word), HoursByDiscipline)  # Записываем предмет на основе кол-ва часов
+    prepod2 = teacher2.objects.filter(isBusy="True")
 
+    PrepodArray = [prepod1, prepod2]
+
+    Rasp.setTeacher(Academic, PrepodArray)  # Записываем преподователя на основе его выбора
+    for word in subjectArray:
+
+        if studyPlanPE61.objects.filter(subject=word).exists():
+            HoursByDiscipline = studyPlanPE61.objects.filter(subject=word).aggregate(Sum('hours')).get('hours__sum',
+                                                                                                       0.00)  # кол-во часов по дисциплине
+            hours = CustomValues()
+            hours.alias = "HoursByDiscipline " + word
+            hours.value = HoursByDiscipline
+            hours.save()
+            Rasp.setSubject(Academic, studyPlanPE61.objects.filter(subject=word),
+                            HoursByDiscipline)  # Записываем предмет на основе кол-ва часов
 
     Result = MainTable.objects.all()
 
+    return render(request, 'test.html', {'posts': Result, })
+
+
+def Sorted_rasp(request):
     return render(request, 'test.html', {'posts': Result, })
