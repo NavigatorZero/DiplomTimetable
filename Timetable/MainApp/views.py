@@ -9,12 +9,11 @@ from django.contrib.auth.models import User
 from .Forms import NameForm
 
 from django.db import connection, transaction
-from django.contrib.auth import authenticate ,login , logout
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
 
 
 def Main_list(request):
-
     if request.method == 'POST' and 'email' in request.POST:
         UserModel = get_user_model()
         user = UserModel.objects.get(email=request.POST['email'])
@@ -56,8 +55,11 @@ def Main_list(request):
 
             MainTable.objects.bulk_create(opa)
     if request.method == 'POST' and 'scheduleDay' in request.POST:
+        print(request.POST['scheduleDay'])
+
         oneDayRasp = MainTable.objects.filter(vremya=request.POST['scheduleDay'])
-        return render(request, 'list.html', {'posts': oneDayRasp})
+
+        return render(request, 'main_table.html', {'posts': oneDayRasp, 'dayRasp': request.POST['scheduleDay']})
 
     semestrdays = 121  # кол-во дней в семестре
     semestrHours = 726  # часов в семестре
@@ -90,4 +92,4 @@ def Main_list(request):
 
     Result = MainTable.objects.all()
 
-    return render(request, 'test.html', {'posts': Result, })
+    return render(request, 'test.html', {'posts': Result})

@@ -1,90 +1,60 @@
-<div class="test">
-    {% block title %}Вложенный титл{% endblock %}
-    {% block content %}
-    <div class="row">
-        <div class="form-group col-l2">
+{% block title %}Вложенный титл{% endblock %}
+{% block content %}
 
-            <label>Выберите дату занятий</label>
-            <input type="date" id="raspDate" class="date">
-            <button id="raspDateButton" class="btn btn-success"> отправить</button>
+<div class="form-group col-md-2">
 
-            <form action="{%url 'Main_list' %}" method="post">
-                {% csrf_token %}
-                <button type="submit" name="erase" id="erase">Стереть расписание</button>
-                <button type="submit" name="fill" id="fill">Составить расписание</button>
-            </form>
-            <label for="inputState">Выберите Дату</label>
+    <label>Выберите дату занятий</label>
 
-        </div>
+    <div class="input-group date">
+        <input type="text" class="form-control datepicker" value="{% now 'Y-m-d' %}"
+               data-date-format="yyyy-mm-dd">
     </div>
-    <h1>Расписнание на </h1>
 
+    <form action="{%url 'Main_list' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" name="erase" id="erase">Стереть расписание</button>
+        <button type="submit" name="fill" id="fill">Составить расписание</button>
+    </form>
+</div>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th> Номер пары</th>
-            <th>
-                Предмет
-            </th>
-            <th>
-                Преподователь
-            </th>
-            <th>
-                Тип занятия
-            </th>
-            <th>Аудитория</th>
-            <th>Время</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for post in posts %}
-        <tr>
-            <td>{{post.NLecii}}</td>
-            <td>{{post.Predmet }}</td>
-            <td>{{post.Prepod}}</td>
-            <td>{{post.Podgruppa}}</td>
-            <td>{{post.Auditoriya }}</td>
-            <td>{{post.vremya |date:"d-m-Y"}}</td>
-            {% endfor %}
-        </tr>
-        </tbody>
-    </table>
-    <script>
-        $(document).ready(function () {
-            var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+{% include "main_table.html" %}
+<script>
+    $(document).ready(function () {
 
-            function csrfSafeMethod(method) {
-                // these HTTP methods do not require CSRF protection
-                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-            }
+        $(".datepicker").datepicker({autoclose: true});
+        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
 
-            $("#raspDateButton").click(function () {
-                $.ajax({
-                    method: "POST",
-                    url: "{%url 'Main_list'%}",
-                    dataType: "text",
-                    data: {
-                        "scheduleDay": $("#raspDate").val(),
-                    },
-                    beforeSend: function (xhr, settings) {
-                        // if not safe, set csrftoken
-                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                        }
-                    },
-                    success: function (data) {
-                        $(".test").html(data);
-                        console.log('ssucces')
-                    },
-                    error: function (er) {
-                        console.log(er);
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        $(".datepicker").change(function () {
+            data = $('.datepicker').datepicker().val()
+            $.ajax({
+                method: "POST",
+                url: "{%url 'Main_list'%}",
+                dataType: "text",
+                data: {
+                    "scheduleDay": data,
+                },
+                beforeSend: function (xhr, settings) {
+                    // if not safe, set csrftoken
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
                     }
-                });
+                },
+                success: function (data) {
+                    $(".main_table").html(data);
+
+                    console.log('ssucces')
+                },
+                error: function (er) {
+                    console.log(er);
+                }
             });
-
         });
-
-    </script>
-    {% endblock %}
+    });
+</script>
+{% endblock %}
 </div>
