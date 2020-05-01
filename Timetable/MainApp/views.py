@@ -9,9 +9,27 @@ from django.contrib.auth.models import User
 from .Forms import NameForm
 
 from django.db import connection, transaction
+from django.contrib.auth import authenticate ,login , logout
+from django.contrib.auth import get_user_model
 
 
 def Main_list(request):
+
+    if request.method == 'POST' and 'email' in request.POST:
+        UserModel = get_user_model()
+        user = UserModel.objects.get(email=request.POST['email'])
+        print(user)
+        user = authenticate(request, username=user, password=request.POST['password'])
+
+        if user is not None:
+            login(request, user)
+
+        else:
+            print('no Auth')
+
+    if request.method == 'POST' and 'logout' in request.POST:
+        logout(request)
+
     if request.method == 'POST' and 'erase' in request.POST:
         MainTable.objects.all().delete()
         group1 = studyPlanPE61.objects.all()
@@ -37,12 +55,8 @@ def Main_list(request):
             opa.append(test)
 
             MainTable.objects.bulk_create(opa)
-
     if request.method == 'POST' and 'scheduleDay' in request.POST:
         oneDayRasp = MainTable.objects.filter(vremya=request.POST['scheduleDay'])
-        print(oneDayRasp)
-        print("itworks")
-
         return render(request, 'list.html', {'posts': oneDayRasp})
 
     semestrdays = 121  # кол-во дней в семестре
@@ -76,8 +90,4 @@ def Main_list(request):
 
     Result = MainTable.objects.all()
 
-    return render(request, 'test.html', {'posts': Result, })
-
-
-def Sorted_rasp(request):
     return render(request, 'test.html', {'posts': Result, })

@@ -27,7 +27,8 @@ class Rasp:
                 if Table[x].teacherId == studyPlan[y].teacher and hours > 0:
                     obj = MainTable.objects.get(pk=Table[x].id)
                     hoursType = studyPlan[y].hours
-                    if studyPlan[y].typeSubject == "Лекция" and obj.Auditoriya == "" and  studyPlan[y].remaningLectures > 0 :
+                    if studyPlan[y].typeSubject == "Лекция" and obj.Auditoriya == "" and studyPlan[
+                        y].remaningLectures > 0:
                         clases = CafedraClasses.objects.filter(AllowedLections="True")
                         obj.Predmet = studyPlan[y].subject
                         obj.Auditoriya = clases[0].ClassName
@@ -38,7 +39,8 @@ class Rasp:
                         hours -= 1
                         continue
 
-                    if studyPlan[y].typeSubject == "Практика" and obj.Auditoriya == "" and studyPlan[y].remaningLectures > 0:
+                    if studyPlan[y].typeSubject == "Практика" and obj.Auditoriya == "" and studyPlan[
+                        y].remaningLectures > 0:
                         clases = CafedraClasses.objects.filter(AllowedPractice="True")
                         obj.Predmet = studyPlan[y].subject
                         obj.Auditoriya = clases[0].ClassName
@@ -49,7 +51,8 @@ class Rasp:
                         hours -= 1
                         continue
 
-                    if studyPlan[y].typeSubject == "ЛабРабота" and obj.Auditoriya == "" and studyPlan[y].remaningLectures > 0:
+                    if studyPlan[y].typeSubject == "ЛабРабота" and obj.Auditoriya == "" and studyPlan[
+                        y].remaningLectures > 0:
                         clases = CafedraClasses.objects.filter(AllowedLabs="True")
                         obj.Predmet = studyPlan[y].subject
                         obj.Auditoriya = clases[0].ClassName

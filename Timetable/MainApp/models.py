@@ -14,7 +14,7 @@ class studyPlanPE61(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
-    remaningLectures=models.IntegerField()
+    remaningLectures = models.IntegerField()
 
 
 class teacher1(models.Model):
@@ -64,10 +64,10 @@ class MainTable(models.Model):
     )
 
 
-
 class CustomValues(models.Model):
     alias = models.CharField(max_length=250)
     value = models.CharField(max_length=250)
+
 
 def __str__(self):
     return self.title
