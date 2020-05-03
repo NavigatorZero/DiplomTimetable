@@ -11,9 +11,11 @@ from .Forms import NameForm
 from django.db import connection, transaction
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
+from django.apps import apps
 
 
 def Main_list(request):
+    listOfTeachers = []
     if request.method == 'POST' and 'email' in request.POST:
         UserModel = get_user_model()
         user = UserModel.objects.get(email=request.POST['email'])
@@ -22,7 +24,13 @@ def Main_list(request):
 
         if user is not None:
             login(request, user)
+            if user.is_staff:
+                modelName = user.username
+                Model = apps.get_model('MainApp', modelName)
 
+                teacherTable = Model.objects.all()
+                Result = MainTable.objects.all()
+                return render(request, 'test.html', {'posts': Result, 'teacherTable': teacherTable})
         else:
             print('no Auth')
 
@@ -52,11 +60,10 @@ def Main_list(request):
             test.vremya = datetime.datetime.now()
 
             opa.append(test)
-
             MainTable.objects.bulk_create(opa)
+
     if request.method == 'POST' and 'scheduleDay' in request.POST:
         print(request.POST['scheduleDay'])
-
         oneDayRasp = MainTable.objects.filter(vremya=request.POST['scheduleDay'])
 
         return render(request, 'main_table.html', {'posts': oneDayRasp, 'dayRasp': request.POST['scheduleDay']})
@@ -64,18 +71,16 @@ def Main_list(request):
     semestrdays = 121  # кол-во дней в семестре
     semestrHours = 726  # часов в семестре
     subjectArray = [
-        "Математика", "Физика", "Гегорафия"
+        "Математика", "Физика", "География"
     ]
 
     AllHours = studyPlanPE61.objects.aggregate(Sum('hours')).get('hours__sum',
                                                                  0.00)  # кол-во часов одной группы в семестр по всем дисциплинам
     Academic = MainTable.objects.all()
 
-    prepod1 = teacher1.objects.filter(isBusy="True")
-
-    prepod2 = teacher2.objects.filter(isBusy="True")
-
-    PrepodArray = [prepod1, prepod2]
+    PrepodArray = [teacher1.objects.filter(isBusy="True"), teacher2.objects.filter(isBusy="True"),
+                   teacher3.objects.filter(isBusy="True"),
+                   teacher4.objects.filter(isBusy="True"), teacher5.objects.filter(isBusy="True")]
 
     Rasp.setTeacher(Academic, PrepodArray)  # Записываем преподователя на основе его выбора
     for word in subjectArray:
@@ -92,4 +97,4 @@ def Main_list(request):
 
     Result = MainTable.objects.all()
 
-    return render(request, 'test.html', {'posts': Result})
+    return render(request, 'test.html', {'posts': Result, })

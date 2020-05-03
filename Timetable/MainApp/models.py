@@ -4,6 +4,8 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
 import datetime
+from django.contrib.auth.models import User
+
 
 
 class studyPlanPE61(models.Model):
@@ -28,6 +30,35 @@ class teacher1(models.Model):
 
 
 class teacher2(models.Model):
+    LessonNumber = models.IntegerField(null=True)
+    Date = models.DateField(null=True)
+    isBusy = models.BooleanField(default=0)
+    teacher = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+
+class teacher3(models.Model):
+    LessonNumber = models.IntegerField(null=True)
+    Date = models.DateField(null=True)
+    isBusy = models.BooleanField(default=0)
+    teacher = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+
+
+class teacher4(models.Model):
+    LessonNumber = models.IntegerField(null=True)
+    Date = models.DateField(null=True)
+    isBusy = models.BooleanField(default=0)
+    teacher = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+
+
+class teacher5(models.Model):
     LessonNumber = models.IntegerField(null=True)
     Date = models.DateField(null=True)
     isBusy = models.BooleanField(default=0)
