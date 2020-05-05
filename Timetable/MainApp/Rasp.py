@@ -8,25 +8,31 @@ class Rasp:
     def setTeacher(Table, PrepodArray):
         for x in range(len(Table)):
             for PrepodTable in PrepodArray:
-                for y in range(len(PrepodTable)):
-                    if Table[x].id == PrepodTable[y].id and Table[x].Prepod == "":
-                        obj = MainTable.objects.get(pk=Table[x].id)
-                        obj.Prepod = PrepodTable[y].teacher.last_name + " " + PrepodTable[
-                            y].teacher.first_name  # надо откуда то брать имя препода
-                        obj.NLecii = PrepodTable[y].LessonNumber
-                        obj.vremya = PrepodTable[y].Date
-                        obj.teacherId = PrepodTable[y].teacher
-                        obj.save()
+                day = PrepodTable.filter(Date=Table[x].vremya)
+                if day and Table[x].Prepod == "":
+                    mainTableday = Table.filter(vremya=Table[x].vremya)
+                    for lesson in day:
+                        for mainDay in mainTableday:
+
+                            if lesson.LessonNumber == mainDay.NLecii:
+                                obj = Table.get(pk=mainDay.id)
+                                obj.Prepod = lesson.teacher.last_name + " " + lesson.teacher.first_name  # надо откуда то брать имя препода
+                                obj.teacherId = lesson.teacher
+                                obj.save()
 
     # функция устанавливает предмет в главную таблицу
     def setSubject(Table, studyPlan, hours):
-        Table.exclude(Prepod="")
+        exTable=Table.exclude(Prepod="")
 
-        for x in range(len(Table)):
+        for x in range(len(exTable)):
             for y in range(len(studyPlan)):
-                if Table[x].teacherId == studyPlan[y].teacher and hours > 0:
-                    obj = MainTable.objects.get(pk=Table[x].id)
+                print("eto TABLICA ID" + str(exTable[x]))
+                print("eto teacher ID"+str( exTable[x].teacherId))
+                print("eto study plan ID" + str(studyPlan[y].teacher))
+                if exTable[x].teacherId == studyPlan[y].teacher and hours > 0:
+                    obj = MainTable.objects.get(pk=exTable[x].id)
                     hoursType = studyPlan[y].hours
+
                     if studyPlan[y].typeSubject == "Лекция" and obj.Auditoriya == "" and studyPlan[
                         y].remaningLectures > 0:
                         clases = CafedraClasses.objects.filter(AllowedLections="True")

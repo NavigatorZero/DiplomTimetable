@@ -1,0 +1,115 @@
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Мои занятия</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="lessonNumber">Номер пары</label>
+                        <select class="form-control" id="lessonNumber">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                        </select>
+
+                    </div>
+                    <div class="col-md-4">
+                        <label ">Номер пары</label>
+                        <input type="text" class="form-control datepicker teacherPic"
+                               data-date-format="yyyy-mm-dd">
+                    </div>
+                    <div class="col-md-4">
+                        <button id="addRow" class="button btn-secondary">Добавить</button>
+                    </div>
+                </div>
+                {% include 'modal_table.html' %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $(".teacherPic").datepicker({autoclose: true});
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+
+        $("#addRow").click(function () {
+            var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+            console.log('gege')
+            data = $('.teacherPic').datepicker().val()
+            $.ajax({
+                method: "POST",
+                url: "{%url 'Main_list'%}",
+                dataType: "text",
+                data: {
+                    "day": data, "lessonNumber": $('#lessonNumber').val()
+                },
+                beforeSend: function (xhr, settings) {
+                    // if not safe, set csrftoken
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                },
+                success: function (data) {
+                    $(".popup_table").html(data);
+                    $('#exampleModalCenter').modal('show')
+                    console.log('ssucces')
+                },
+                error: function (er) {
+                    console.log(er);
+                }
+            });
+
+        })
+
+
+        $("body").on('click', ".fa-minus-square", function () {
+            console.log("here + " + $(this).data("id"))
+            var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+            $.ajax({
+                method: "POST",
+                url: "{%url 'Main_list'%}",
+                dataType: "text",
+                data: {
+                    "teacherRecordId": $(this).data("id"),
+                },
+                beforeSend: function (xhr, settings) {
+                    // if not safe, set csrftoken
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                },
+                success: function (data) {
+                    $(".popup_table").html(data);
+                    $('#exampleModalCenter').modal('show')
+                    console.log('ssucces')
+                },
+                error: function (er) {
+                    console.log(er);
+                }
+            });
+
+
+        })
+    });
+
+</script>

@@ -6,7 +6,7 @@
     <label>Выберите дату занятий</label>
 
     <div class="input-group date">
-        <input type="text" class="form-control datepicker" value="{% now 'Y-m-d' %}"
+        <input type="text" class="form-control datepicker dateMain" value="{% now 'Y-m-d' %}"
                data-date-format="yyyy-mm-dd">
     </div>
 
@@ -22,8 +22,7 @@
 </div>
 <script>
     $(document).ready(function () {
-
-        $(".datepicker").datepicker({autoclose: true});
+        $(".dateMain").datepicker({autoclose: true});
         var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
 
         function csrfSafeMethod(method) {
@@ -31,8 +30,8 @@
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
         }
 
-        $(".datepicker").change(function () {
-            data = $('.datepicker').datepicker().val()
+        $(".dateMain").change(function () {
+            data = $('.dateMain').datepicker().val()
             $.ajax({
                 method: "POST",
                 url: "{%url 'Main_list'%}",
