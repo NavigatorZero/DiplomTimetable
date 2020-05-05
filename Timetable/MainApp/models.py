@@ -7,8 +7,18 @@ import datetime
 from django.contrib.auth.models import User
 
 
-
 class studyPlanPE61(models.Model):
+    subject = models.CharField(max_length=250)
+    typeSubject = models.CharField(max_length=50)
+    hours = models.IntegerField()
+    teacher = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+    remaningLectures = models.IntegerField()
+
+
+class studyPlanGroup2(models.Model):
     subject = models.CharField(max_length=250)
     typeSubject = models.CharField(max_length=50)
     hours = models.IntegerField()
@@ -35,6 +45,7 @@ class teacher2(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
+
 
 class teacher3(models.Model):
     LessonNumber = models.IntegerField(null=True)
@@ -82,7 +93,20 @@ class MainTable(models.Model):
     Podgruppa = models.CharField(max_length=250, null=True)
     vremya = models.DateField(null=False)
     Auditoriya = models.CharField(max_length=250, null=True)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+    teacherId = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True
+    )
+
+
+class MainTableGroup2(models.Model):
+    NLecii = models.IntegerField(null=True)
+    Predmet = models.CharField(max_length=250, null=True)
+    Prepod = models.CharField(max_length=250, null=True)
+    Podgruppa = models.CharField(max_length=250, null=True)
+    vremya = models.DateField(null=False)
+    Auditoriya = models.CharField(max_length=250, null=True)
     teacherId = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

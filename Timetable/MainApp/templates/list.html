@@ -5,11 +5,24 @@
 
     <label>Выберите дату занятий</label>
 
-    <div class="input-group date">
-        <input type="text" class="form-control datepicker dateMain" value="{% now 'Y-m-d' %}"
-               data-date-format="yyyy-mm-dd">
-    </div>
+    <div class="row">
+        <div class="col-md-8">
 
+
+                <input type="text" class="form-control datepicker dateMain" value="{% now 'Y-m-d' %}"
+                       data-date-format="yyyy-mm-dd">
+
+        </div>
+        <div class="col-md-6">
+            <label for="lessonNumber">Выберите группу</label>
+            <select class="form-control" id="groupNumber">
+                <option value="MainTable">ПE-61</option>
+                <option value="MainTableGroup2">ПЕ-62</option>
+            </select>
+        </div>
+        <button class="btn-group-toggle" id="filters"> Применить фильтры</button>
+    </div>
+</div>
     <form action="{%url 'Main_list' %}" method="post">
         {% csrf_token %}
         <button type="submit" name="erase" id="erase">Стереть расписание</button>
@@ -30,14 +43,15 @@
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
         }
 
-        $(".dateMain").change(function () {
+        $("#filters").click(function () {
             data = $('.dateMain').datepicker().val()
+            group= $('#groupNumber').val()
             $.ajax({
                 method: "POST",
                 url: "{%url 'Main_list'%}",
                 dataType: "text",
                 data: {
-                    "scheduleDay": data,
+                    "scheduleDay": data,'group':group
                 },
                 beforeSend: function (xhr, settings) {
                     // if not safe, set csrftoken

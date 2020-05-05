@@ -1,5 +1,4 @@
-from django.shortcuts import render
-import datetime
+from datetime import date, timedelta
 
 from django.apps import apps
 from django.contrib.auth import authenticate, login, logout
@@ -7,12 +6,9 @@ from django.contrib.auth import get_user_model
 from django.db import connection, transaction
 from django.db.models import Sum
 from django.shortcuts import render
-from django.http import JsonResponse
+
 from .Rasp import *
 from .models import *
-from django.forms.models import model_to_dict
-from django.core import serializers
-from datetime import date, timedelta
 
 
 def Main_list(request):
@@ -66,20 +62,27 @@ def Main_list(request):
                 group1[x].remaningLectures = group1[x].hours
                 group1[x].save()
 
+            MainTableGroup2.objects.all().delete()
+            group2 = studyPlanGroup2.objects.all()
+            for x in range(len(group2)):
+                group2[x].remaningLectures = group2[x].hours
+                group2[x].save()
+
         if 'fill' in variables:
-            cursor = connection.cursor()
-            # Data modifying operation - commit required
-            cursor.execute("UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'MainApp_maintable'")
-            transaction.commit()
+            # cursor = connection.cursor()
+            # # Data modifying operation - commit required
+            # # cursor.execute("UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'MainApp_maintable'")
+            # # transaction.commit()
 
             sdate = date(2020, 9, 1)  # start date
-            edate = date(2020, 10, 1)  # end date
+            edate = date(2020, 9, 4)  # end date
 
             delta = edate - sdate  # as timedelta
 
             for i in range(delta.days + 1):
                 day = sdate + timedelta(days=i)
 
+                # заполняем первую группу
                 opa = []
                 for d in range(6):
                     test = MainTable()
@@ -93,40 +96,55 @@ def Main_list(request):
 
                 MainTable.objects.bulk_create(opa)
 
-
+                # заполняем вторую группу
+                group2Main = []
+                for d in range(6):
+                    test = MainTableGroup2()
+                    test.Auditoriya = ""
+                    test.NLecii = d + 1
+                    test.Predmet = ""
+                    test.Prepod = ""
+                    test.Podgruppa = ""
+                    test.vremya = day
+                    group2Main.append(test)
+                MainTableGroup2.objects.bulk_create(opa)
 
             semestrdays = 121  # кол-во дней в семестре
             semestrHours = 726  # часов в семестре
-            subjectArray = [
-                "Математика", "Физика", "География"
-            ]
+            subjectArray = CustomValues.objects.filter(alias="subject")
 
             AllHours = studyPlanPE61.objects.aggregate(Sum('hours')).get('hours__sum',
                                                                          0.00)  # кол-во часов одной группы в семестр по всем дисциплинам
-            Academic = MainTable.objects.all()
+            mainTable1 = MainTable.objects.all()
+            mainTable2 = MainTableGroup2.objects.all()
 
             PrepodArray = [teacher1.objects.all(), teacher2.objects.all(),
                            teacher3.objects.all(),
                            teacher4.objects.all(), teacher5.objects.all()]
 
-            Rasp.setTeacher(Academic, PrepodArray)  # Записываем преподователя на основе его выбора
+            Rasp.setTeacher(mainTable1, PrepodArray,
+                            1)  # Записываем преподователя в группу 1 на основе его выбора
+            Rasp.setTeacher(mainTable2, PrepodArray,
+                            2)  # Записываем преподователя в группу 2 на основе его выбора
             for word in subjectArray:
-
-                if studyPlanPE61.objects.filter(subject=word).exists():
-                    HoursByDiscipline = studyPlanPE61.objects.filter(subject=word).aggregate(Sum('hours')).get(
+                if studyPlanPE61.objects.filter(subject=word.value).exists():
+                    HoursByDiscipline = studyPlanPE61.objects.filter(subject=word.value).aggregate(Sum('hours')).get(
                         'hours__sum',
                         0.00)  # кол-во часов по дисциплине
-                    hours = CustomValues()
-                    hours.alias = "HoursByDiscipline " + word
-                    hours.value = HoursByDiscipline
-                    hours.save()
-                    print('yoyoy')
-                    Rasp.setSubject(Academic, studyPlanPE61.objects.filter(subject=word),
+                    Rasp.setSubject(mainTable1, studyPlanPE61.objects.filter(subject=word.value),
                                     HoursByDiscipline)  # Записываем предмет на основе кол-ва часов
-
+                if studyPlanGroup2.objects.filter(subject=word.value).exists():
+                    HoursByDiscipline = studyPlanGroup2.objects.filter(subject=word.value).aggregate(Sum('hours')).get(
+                        'hours__sum',
+                        0.00)  # кол-во часов по дисциплине
+                    Rasp.setSubject(mainTable2, studyPlanGroup2.objects.filter(subject=word.value),
+                                    HoursByDiscipline)  # Записываем предмет на основе кол-ва часов
         if request.method == 'POST' and 'scheduleDay' in request.POST:
             print(request.POST['scheduleDay'])
-            oneDayRasp = MainTable.objects.filter(vremya=request.POST['scheduleDay'])
+            modelName = request.POST['group']
+            Model = apps.get_model('MainApp', modelName)
+
+            oneDayRasp = Model.objects.filter(vremya=request.POST['scheduleDay'])
 
             return render(request, 'main_table.html', {'posts': oneDayRasp, 'dayRasp': request.POST['scheduleDay']})
 
