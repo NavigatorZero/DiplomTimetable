@@ -21,7 +21,7 @@
     {% if user.is_authenticated %}
     <h3>Привет! {{user.last_name}} {{user.first_name}}</h3>
     {%if user.is_staff%}
-    <button class="btn btn-secondary float-sm-right" id="TeacherTable"
+    <button class="btn btn-secondary float-sm-right" id="TeacherTable" data-id = '{{user.id}}'
             data-toggle="modal" data-target="#exampleModalCenter">Выбор времени занятий
     </button>
 
@@ -76,6 +76,11 @@
 <script>
     $(document).ready(function () {
 
+          function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
         $("#login").click(function () {
             if ($("#login_form").css("visibility") === "visible") {
                 $("#login_form").css("visibility", "hidden");
@@ -83,6 +88,34 @@
                 $("#login_form").css("visibility", "visible");
             }
         })
+
+
+        $("#TeacherTable").click(function () {
+            userId = $(this).data("id");
+            var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+            $.ajax({
+                method: "POST",
+                url: "{%url 'Main_list'%}",
+                dataType: "text",
+                data: {
+                    'userID': userId
+                },
+                beforeSend: function (xhr, settings) {
+                    // if not safe, set csrftoken
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                },
+                success: function (data) {
+                      $(".popup_table").html(data);
+                    $('#exampleModalCenter').modal('show')
+                    console.log('ssucces')
+                },
+                error: function (er) {
+                    console.log(er);
+                }
+            });
+        });
 
     });
 </script>
