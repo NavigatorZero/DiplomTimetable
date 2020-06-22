@@ -1,0 +1,48 @@
+{% block content %} {% load static %}
+<!--Блок, который будет встариваться в виде шапки-->
+
+<div class="head container-fluid">
+  <div class="row">
+    <div class="logo col-sm-6 col-lg-6">
+            <a href="{% url 'Main_list' %}">
+        <img src="{% static 'img/logo_uisi.png' %}" />
+      </a>
+    </div>
+
+    {% if user.is_authenticated %}
+    <h4 class="col-sm-6 col-lg-4 m-auto">
+      Привет, {{user.last_name}} {{user.first_name}}!
+    </h4>
+
+    <button class="btn btn-secondary-outline col-sm-6 col-lg-1">
+      <a class="btnAdm" href="/admin/">admin panel</a>
+    </button>
+
+    <button class="btn btn-secondary-outline col-sm-6 col-lg-1" id="logout">
+      Выход
+    </button>
+
+    {% else %}
+    <nav class="navbar navbar-expand navbar-light col-md-6 col-lg-5">
+      <ul class="navbar-nav container-fluid m-auto">
+        <li class="nav-item col-4">
+          <a class="nav-link" href="{% url 'Time_list' %}"> Звонки</a>
+        </li>
+        <li class="nav-item col-4">
+          <a class="nav-link" href="{% url 'Dif_list' %}"> Изменения</a>
+        </li>
+        <li class="nav-item col-4">
+          <a class="nav-link" href="{% url 'Main_list' %}"> Расписание</a>
+        </li>
+      </ul>
+    </nav>
+
+    <button class="login btn btn-secondary-outline col-sm-12 col-lg-1" id="login">
+      Вход
+    </button>
+
+    {%endif%}
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+<div class="main_table container">
+    <div class="row table-responsive m-auto">
+
+        <h1 class="m-auto">Расписание {{dayRasp}}</h1>
+        <table class="table table-hover table-dark ">
+            <thead>
+            <tr>
+                <th  scope="col">Номер пары</th>
+                <th  scope="col">Предмет</th>
+                <th  scope="col">Преподователь</th>
+                <th  scope="col">Тип занятия</th>
+                <th  scope="col">Аудитория</th>
+                <th  scope="col">Дата</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for post in posts %}
+            <tr>
+                <th scope="row">{{post.NLecii}}</th>
+                <td>{{post.Predmet }}</td>
+                <td>{{post.Prepod}}</td>
+                <td>{{post.Podgruppa}}</td>
+                <td>{{post.Auditoriya }}</td>
+                <td>{{post.vremya |date:"d-m-Y"}}</td>
+            </tr>
+             {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
