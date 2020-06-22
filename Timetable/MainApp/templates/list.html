@@ -26,7 +26,7 @@
     </button>
 
     {% if user.is_authenticated %} {%if user.is_staff%}
-    <button
+    <!-- <button
       class="btn filterForm btn-secondary-outline col-sm-12 col-lg-3"
       id="TeacherTable"
       data-id="{{user.id}}"
@@ -34,13 +34,10 @@
       data-target="#exampleModalCenter"
     >
       Редактировать расписание
-    </button>
+    </button> -->
 
 
     {% include "modal.html" %}
-
-    {%endif%} {%endif%}
-
     <!-- <div class="fillEr col-lg-3 container-fluid">
       <form class="row m-auto" action="{%url 'Main_list' %}" method="post">
         {% csrf_token %}
@@ -52,6 +49,9 @@
         </button>
       </form>
     </div> -->
+    {%endif%} {%endif%}
+
+
   </div>
 </div>
 

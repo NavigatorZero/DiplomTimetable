@@ -10,15 +10,40 @@
     </div>
 
     {% if user.is_authenticated %}
-    <h4 class="col-sm-6 col-lg-4 m-auto">
+    <h4 class="col-sm-6 col-lg-3 m-auto">
       Привет, {{user.last_name}} {{user.first_name}}!
     </h4>
 
-    <button class="btn btn-secondary-outline col-sm-6 col-lg-1">
-      <a class="btnAdm" href="/admin/">admin panel</a>
-    </button>
 
-    <button class="btn btn-secondary-outline col-sm-6 col-lg-1" id="logout">
+
+  <div class="red col-lg-2 container-fluid">
+    <div class="fillEr ">
+      <form class="form-inline m-auto" action="{%url 'Main_list' %}" method="post">
+        {% csrf_token %}
+        <button class="filterForm btn btn-secondary-outline col-md-6 col-lg-12" type="submit" name="erase" id="erase">
+          Стереть расписание
+        </button>
+        <button class="filterForm btn btn-secondary-outline col-md-6 col-lg-12" type="submit" name="fill" id="fill">
+          Составить расписание
+        </button>
+      </form>
+    </div>
+    <button
+      class="btn filterForm btn-secondary-outline col-12"
+      id="TeacherTable"
+      data-id="{{user.id}}"
+      data-toggle="modal"
+      data-target="#exampleModalCenter"
+    >
+      Мои занятия
+    </button>
+</div>
+
+    <!-- <button class="btn btn-secondary-outline col-sm-6 col-lg-1">
+      <a class="btnAdm" href="/admin/">admin panel</a>
+    </button> -->
+
+    <button class="btn logout btn-secondary-outline col-sm-6 col-lg-1" id="logout">
       Выход
     </button>
 
