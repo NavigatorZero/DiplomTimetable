@@ -80,3 +80,11 @@ class TablePreparation:
                     0.00)  # кол-во часов по дисциплине
                 Rasp.setSubject(mainTable1, studyPlanPE61.objects.filter(subject=word.value),
                                 HoursByDiscipline)  # Записываем предмет на основе кол-ва часов
+            if studyPlanGroup2.objects.filter(subject=word.value).exists():
+                HoursByDiscipline = studyPlanGroup2.objects.filter(subject=word.value).aggregate(Sum('hours')).get(
+                    'hours__sum',
+                    0.00)  # кол-во часов по дисциплине
+                Rasp.setSubject(mainTable2, studyPlanGroup2.objects.filter(subject=word.value),
+                                HoursByDiscipline)  # Записываем предмет на основе кол-ва часов
+
+
