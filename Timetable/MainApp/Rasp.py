@@ -22,12 +22,9 @@ class Rasp:
                                     obj.save()
 
                                 if priority == 2:
-                                    print('amahere')
-                                    print('amahere')
                                     isBusy = MainTable.objects.filter(NLecii=mainDay.NLecii, vremya=mainDay.vremya)
                                     if isBusy:
-
-                                        obj = Table.get(pk=mainDay.id+1)
+                                        obj = Table.get(pk=mainDay.id + 1)
                                         obj.Prepod = lesson.teacher.last_name + " " + lesson.teacher.first_name  # надо откуда то брать имя препода
                                         obj.teacherId = lesson.teacher
                                         obj.save()
@@ -78,3 +75,41 @@ class Rasp:
                         studyPlan[y].save()
                         hours -= 1
                         continue
+
+    def lastIterate(Table,studyPlan):
+        Table = Table.filter(Prepod__exact='')
+        teacherId = studyPlan[0].teacher
+        for x in Table:
+            x.Prepod = teacherId.last_name + " " + teacherId.first_name
+            lections = studyPlan.filter(typeSubject="Лекция")[0].remaningLectures
+            practice = studyPlan.filter(typeSubject="Практика")[0].remaningLectures
+            for type in studyPlan:
+                if type.typeSubject == "Лекция" and type.remaningLectures > 0:
+                    clases = CafedraClasses.objects.filter(AllowedLections="True")
+                    x.Predmet = type.subject
+                    x.Auditoriya = clases[0].ClassName
+                    x.Podgruppa = type.typeSubject
+                    x.save()
+                    type.remaningLectures -= 1
+                    type.save()
+                    continue
+                if type.typeSubject == "Практика" and type.remaningLectures > 0 and lections == 0:
+                    clases = CafedraClasses.objects.filter(AllowedPractice="True")
+                    x.Predmet = type.subject
+                    x.Auditoriya = clases[0].ClassName
+                    x.Podgruppa = type.typeSubject
+                    x.save()
+                    type.remaningLectures -= 1
+                    type.save()
+
+                    continue
+                if type.typeSubject == "ЛабРабота" and type.remaningLectures > 0 and lections == 0 and practice == 0:
+                    clases = CafedraClasses.objects.filter(AllowedLabs="True")
+                    x.Predmet = type.subject
+                    x.Auditoriya = clases[0].ClassName
+                    x.Podgruppa = type.typeSubject
+                    x.save()
+                    type.remaningLectures -= 1
+                    type.save()
+
+                    continue

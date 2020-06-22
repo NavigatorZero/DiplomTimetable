@@ -9,10 +9,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <label for="lessonNumber">Номер пары</label>
-                        <select class="form-control" id="lessonNumber">
+                <div class="row inputForm container-fluid m-auto">
+                    <div class="filterForm row col-sm-6 col-lg-4 m-auto">
+                        <label class="col-12" for="lessonNumber">Номер пары</label>
+                        <select class="form-control col-12" id="lessonNumber">
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
@@ -22,13 +22,13 @@
                         </select>
 
                     </div>
-                    <div class="col-md-4">
-                        <label>Дата</label>
-                        <input type="text" class="form-control datepicker teacherPic"
+                    <div class="filterForm col-sm-6 col-lg-4 mt-auto">
+                        <label  class="col-12">Дата</label>
+                        <input type="text" class="form-control datepicker teacherPic col-12"
                                data-date-format="yyyy-mm-dd">
                     </div>
-                    <div class="col-md-4">
-                        <button id="addRow" class="button btn-secondary">Добавить</button>
+                    <div class="filterForm col-sm-6 col-lg-4 mt-auto">
+                        <button id="addRow" class=" button btn-secondary">Добавить</button>
                     </div>
                 </div>
                 {% include 'modal_table.html' %}

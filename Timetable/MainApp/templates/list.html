@@ -1,73 +1,96 @@
-{% block title %}Вложенный титл{% endblock %}
+<!-- {% block title %}Вложенный титл{% endblock %} -->
 {% block content %}
 
-<div class="form-group col-md-2">
-
-    <label>Выберите дату занятий</label>
-
-    <div class="row">
-        <div class="col-md-8">
-
-
-                <input type="text" class="form-control datepicker dateMain" value="{% now 'Y-m-d' %}"
-                       data-date-format="yyyy-mm-dd">
-
-        </div>
-        <div class="col-md-6">
-            <label for="lessonNumber">Выберите группу</label>
-            <select class="form-control" id="groupNumber">
-                <option value="MainTable">ПE-61</option>
-                <option value="MainTableGroup2">ПЕ-62</option>
-            </select>
-        </div>
-        <button class="btn-group-toggle" id="filters"> Применить фильтры</button>
+<div class="form-inline col-sm-12 col-lg-10">
+  <div class="row inputForm container-fluid m-auto">
+    <div class="filterForm col-sm-6 col-lg-3 row m-auto">
+      <label class=" col-sm-12 col-lg-6" for="lessonNumber">Группа</label>
+      <select class="form-control col-sm-12 col-lg-6" id="groupNumber">
+        <option value="MainTable">ПE-61</option>
+        <option value="MainTableGroup2">ПЕ-62</option>
+      </select>
     </div>
-</div>
-    <form action="{%url 'Main_list' %}" method="post">
+
+    <div class="filterForm col-sm-6 col-lg-3 row m-auto">
+      <label class="col-sm-12 col-lg-6">Дата</label>
+      <input
+        type="text"
+        class="col-sm-12 col-lg-6 form-control datepicker dateMain"
+        value="{% now 'Y-m-d' %}"
+        data-date-format="yyyy-mm-dd"
+      />
+    </div>
+
+    <button class="filterForm btn btn-secondary-outline col-sm-12 col-lg-3" id="filters">
+      Применить фильтры
+    </button>
+
+    {% if user.is_authenticated %} {%if user.is_staff%}
+    <!-- <button
+      class="btn filterForm btn-secondary-outline col-sm-12 col-lg-3"
+      id="TeacherTable"
+      data-id="{{user.id}}"
+      data-toggle="modal"
+      data-target="#exampleModalCenter"
+    >
+      Редактировать расписание
+    </button> -->
+
+
+    {% include "modal.html" %}
+    <!-- <div class="fillEr col-lg-3 container-fluid">
+      <form class="row m-auto" action="{%url 'Main_list' %}" method="post">
         {% csrf_token %}
-        <button type="submit" name="erase" id="erase">Стереть расписание</button>
-        <button type="submit" name="fill" id="fill">Составить расписание</button>
-    </form>
+        <button class="filterForm btn btn-secondary-outline col-md-6 col-lg-12" type="submit" name="erase" id="erase">
+          Стереть расписание
+        </button>
+        <button class="filterForm btn btn-secondary-outline col-md-6 col-lg-12" type="submit" name="fill" id="fill">
+          Составить расписание
+        </button>
+      </form>
+    </div> -->
+    {%endif%} {%endif%}
+
+
+  </div>
 </div>
 
-<div class="col-md-8 offset-2">
-    {% include "main_table.html" %}
-</div>
 <script>
-    $(document).ready(function () {
-        $(".dateMain").datepicker({autoclose: true});
-        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+  $(document).ready(function () {
+    $(".dateMain").datepicker({ autoclose: true });
+    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
 
-        function csrfSafeMethod(method) {
-            // these HTTP methods do not require CSRF protection
-            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-        }
+    function csrfSafeMethod(method) {
+      // these HTTP methods do not require CSRF protection
+      return /^(GET|HEAD|OPTIONS|TRACE)$/.test(method);
+    }
 
-        $("#filters").click(function () {
-            data = $('.dateMain').datepicker().val()
-            group= $('#groupNumber').val()
-            $.ajax({
-                method: "POST",
-                url: "{%url 'Main_list'%}",
-                dataType: "text",
-                data: {
-                    "scheduleDay": data,'group':group
-                },
-                beforeSend: function (xhr, settings) {
-                    // if not safe, set csrftoken
-                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    }
-                },
-                success: function (data) {
-                    $(".main_table").html(data);
-                    console.log('ssucces')
-                },
-                error: function (er) {
-                    console.log(er);
-                }
-            });
-        });
+    $("#filters").click(function () {
+      data = $(".dateMain").datepicker().val();
+      group = $("#groupNumber").val();
+      $.ajax({
+        method: "POST",
+        url: "{%url 'Main_list'%}",
+        dataType: "text",
+        data: {
+          scheduleDay: data,
+          group: group,
+        },
+        beforeSend: function (xhr, settings) {
+          // if not safe, set csrftoken
+          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          }
+        },
+        success: function (data) {
+          $(".main_table").html(data);
+          console.log("ssucces");
+        },
+        error: function (er) {
+          console.log(er);
+        },
+      });
     });
+  });
 </script>
 {% endblock %}

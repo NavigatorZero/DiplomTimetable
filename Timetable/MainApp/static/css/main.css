@@ -1,15 +1,89 @@
-
-.regestrationForm{
-margin-left: 1200px;
+.btn {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 0%;
+  color: rgba(0, 0, 0, 0.8);
 }
 
-.head{
-  border: 4px double black; /* Параметры границы */
-  background: rgb(0,212,255);
-  background: linear-gradient(90deg, rgba(0,212,255,1) 10%, rgba(14,193,119,1) 46%, rgba(2,0,36,1) 98%);
-   padding: 10px; /
-}
-.footer{
-  border: 4px double black; 
+.btn:hover {
+  color: rgba(0, 0, 0, 1);
 }
 
+.btnAdm {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.btnAdm:hover {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 1);
+}
+
+.navbar {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.logout {
+  padding: 0px;
+}
+
+.form-inline {
+  padding: 0px;
+}
+
+.red{
+  display: inline-block;
+  padding:0px;
+}
+
+.inputForm {
+  padding: 0px;
+}
+
+.regestrationForm {
+  margin-left: 1200px;
+}
+
+.head {
+  background: linear-gradient(
+    135deg,
+    rgb(86, 223, 215) 8%,
+    rgba(39, 215, 120, 1) 45%,
+    rgba(0, 33, 63, 1) 95%
+  );
+}
+.logo {
+  padding: 10px;
+}
+
+.tableBlock {
+  background: linear-gradient(
+    90deg,
+    rgba(172, 172, 172, 0.3),
+    rgba(240, 240, 240, 0.15)
+  );
+}
+
+.main_table{
+  padding: 0px;
+}
+
+.filterForm{
+  padding: 10px;
+  margin-bottom: 2px;
+  margin-left: -3px;
+  margin-right: -3px;
+}
+
+
+.fillEr{
+  padding: 0px;
+}
+
+.footer {
+  background: linear-gradient(
+    160deg,
+    rgb(86, 223, 189) 2%,
+    rgb(35, 182, 103) 25%,
+    rgb(0, 33, 63) 85%
+  );
+  padding: 20px;
+}

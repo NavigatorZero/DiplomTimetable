@@ -1,5 +1,8 @@
 /env1/
 /Timetable/MainApp/__pycache__/
 /Timetable/__pycache__/
+/Timetable/MainApp/migrations/
+Timetable/Timetable/__pycache__/
 .idea
+.vscode
 

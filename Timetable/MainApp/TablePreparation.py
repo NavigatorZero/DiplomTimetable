@@ -24,7 +24,7 @@ class TablePreparation:
     def Fill(self):
 
         sdate = date(2020, 9, 1)  # start date
-        edate = date(2020, 9, 4)  # end date
+        edate = date(2020, 9, 30)  # end date
         delta = edate - sdate  # as timedelta
         for i in range(delta.days + 1):
             day = sdate + timedelta(days=i)
@@ -80,11 +80,27 @@ class TablePreparation:
                     0.00)  # кол-во часов по дисциплине
                 Rasp.setSubject(mainTable1, studyPlanPE61.objects.filter(subject=word.value),
                                 HoursByDiscipline)  # Записываем предмет на основе кол-ва часов
+
+                ReminingHours = studyPlanPE61.objects.filter(subject=word.value).aggregate(
+                    Sum('remaningLectures')).get(
+                    'remaningLectures__sum', 0.00)
+                if ReminingHours > 0:
+                    print("here")
+                    Rasp.lastIterate(mainTable1, studyPlanPE61.objects.filter(subject=word.value),
+                                     )
+
             if studyPlanGroup2.objects.filter(subject=word.value).exists():
-                HoursByDiscipline = studyPlanGroup2.objects.filter(subject=word.value).aggregate(Sum('hours')).get(
+                HoursByDiscipline = studyPlanGroup2.objects.filter(subject=word.value).aggregate(
+                    Sum('hours')).get(
                     'hours__sum',
                     0.00)  # кол-во часов по дисциплине
                 Rasp.setSubject(mainTable2, studyPlanGroup2.objects.filter(subject=word.value),
                                 HoursByDiscipline)  # Записываем предмет на основе кол-ва часов
 
-
+                ReminingHours = studyPlanGroup2.objects.filter(subject=word.value).aggregate(
+                    Sum('remaningLectures')).get(
+                    'remaningLectures__sum', 0.00)
+                if ReminingHours > 0:
+                    print("here")
+                    Rasp.lastIterate(mainTable1, studyPlanGroup2.objects.filter(subject=word.value),
+                                     )
