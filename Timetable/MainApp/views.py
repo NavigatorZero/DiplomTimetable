@@ -49,3 +49,10 @@ def Main_list(request):
     Result = MainTable.objects.all()
 
     return render(request, 'test.html', {'posts': Result, })
+
+def Time_list(request):
+    return render(request, 'Time.html')
+
+def Dif_list(request):
+    return render(request, 'dif.html')
+        
